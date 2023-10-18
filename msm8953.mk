@@ -223,6 +223,10 @@ PRODUCT_PACKAGES += \
     IPACM_cfg.xml
 
 # Keymaster
+PRODUCT_COPY_FILES += \
+    prebuilts/vndk/v33/arm/arch-arm-armv7-a-neon/shared/vndk-core/android.hardware.keymaster-V3-ndk.so:$(TARGET_COPY_OUT_VENDOR)/lib/android.hardware.keymaster-V3-ndk.so \
+    prebuilts/vndk/v33/arm64/arch-arm64-armv8-a/shared/vndk-core/android.hardware.keymaster-V3-ndk.so:$(TARGET_COPY_OUT_VENDOR)/lib64/android.hardware.keymaster-V3-ndk.so
+
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0.vendor
 
@@ -316,6 +320,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     PresencePolling \
     RcsService
+
+# Rebootescrow
+PRODUCT_COPY_FILES += \
+    prebuilts/vndk/v33/arm/arch-arm-armv7-a-neon/shared/vndk-core/android.hardware.rebootescrow-V1-ndk.so:$(TARGET_COPY_OUT_VENDOR)/lib/android.hardware.rebootescrow-V1-ndk.so \
+    prebuilts/vndk/v33/arm64/arch-arm-armv8-a/shared/vndk-core/android.hardware.rebootescrow-V1-ndk.so:$(TARGET_COPY_OUT_VENDOR)/lib64/android.hardware.rebootescrow-V1-ndk.so
 
 # Remove unwanted packages
 PRODUCT_PACKAGES += \
