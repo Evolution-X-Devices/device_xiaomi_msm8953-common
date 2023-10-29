@@ -8,7 +8,9 @@
 $(call inherit-product, frameworks/native/build/phone-xhdpi-4096-dalvik-heap.mk)
 
 # Apex
-PRODUCT_COMPRESSED_APEX := false
+$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
+
+OVERRIDE_PRODUCT_COMPRESSED_APEX := false
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
