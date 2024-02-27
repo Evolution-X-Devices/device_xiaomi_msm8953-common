@@ -77,7 +77,7 @@ service qcamerasvr /system/vendor/bin/mm-qcamera-daemon
     class main
     user camera
     group camera system inet input graphics
-    writepid /dev/cpuset/system-background/tasks
+    task_profiles ServiceCapacityLow
 
 #Start up peripheral manager
 service vendor.per_mgr /vendor/bin/pm-service
@@ -85,14 +85,14 @@ service vendor.per_mgr /vendor/bin/pm-service
     user system
     group system
     ioprio rt 4
-    writepid /dev/cpuset/system-background/tasks
+    task_profiles ServiceCapacityLow
 
 service vendor.per_proxy /vendor/bin/pm-proxy
     class core
     user system
     group system
     disabled
-    writepid /dev/cpuset/system-background/tasks
+    task_profiles ServiceCapacityLow
 
 on property:init.svc.vendor.per_mgr=running
     start vendor.per_proxy
@@ -104,7 +104,7 @@ service vendor.qseecomd /vendor/bin/qseecomd
    class core
    user root
    group root
-   writepid /dev/cpuset/system-background/tasks
+   task_profiles ServiceCapacityLow
 
 service thermal-engine /system/vendor/bin/thermal-engine
    class main
@@ -114,7 +114,7 @@ service thermal-engine /system/vendor/bin/thermal-engine
    socket thermal-recv-passive-client stream 0666 system system
    socket thermal-send-rule stream 0660 system system
    group root
-   writepid /dev/cpuset/system-background/tasks
+   task_profiles ServiceCapacityLow
 
 service adsprpcd /system/vendor/bin/adsprpcd
    class main
@@ -132,14 +132,14 @@ service vendor.imsqmidaemon /system/vendor/bin/imsqmidaemon
     user system
     socket ims_qmid stream 0660 system radio
     group radio log diag
-    writepid /dev/cpuset/system-background/tasks
+    task_profiles ServiceCapacityLow
 
 service vendor.imsdatadaemon /system/vendor/bin/imsdatadaemon
     class main
     user system
     socket ims_datad stream 0660 system radio
     group system wifi radio inet log diag
-    writepid /dev/cpuset/system-background/tasks
+    task_profiles ServiceCapacityLow
     disabled
 
 on property:vendor.ims.QMI_DAEMON_STATUS=1
@@ -149,13 +149,13 @@ service vendor.ims_rtp_daemon /system/vendor/bin/ims_rtp_daemon
    class main
    user system
    group radio diag inet log
-   writepid /dev/cpuset/system-background/tasks
+   task_profiles ServiceCapacityLow
 
 service vendor.imsrcsservice /system/vendor/bin/imsrcsd
    class main
    user system
    group radio diag inet log wakelock
-   writepid /dev/cpuset/system-background/tasks
+   task_profiles ServiceCapacityLow
 
 on property:vendor.ims.DATA_DAEMON_STATUS=1
    restart vendor.ims_rtp_daemon
@@ -204,9 +204,7 @@ on charger
     start thermal-engine
 
 on boot
-# set default schedTune value for camera-daemon
-    write /dev/stune/camera-daemon/schedtune.prefer_idle 1
-    write /dev/stune/camera-daemon/schedtune.boost 0
+    chown system system /sys/kernel/hbtp/display_pwr
 
 # access permission for wlan
     chown system system /mnt/vendor/persist/WCNSS_qcom_wlan_nv.bin
@@ -220,11 +218,7 @@ on boot
     setprop vendor.usb.rmnet.inst.name "rmnet"
     setprop vendor.usb.dpl.inst.name "dpl"
 
-    # Smart charging
-    chown system system /sys/class/power_supply/battery/charging_enabled
-    chmod 0666 /sys/class/power_supply/battery/charging_enabled
-
-    # FPS Info
+# FPS Info
     chown system graphics /sys/class/graphics/fb0/measured_fps
     chmod 0666 /sys/class/graphics/fb0/measured_fps
 
@@ -239,32 +233,3 @@ service ppd /vendor/bin/mm-pp-dpps
     group system graphics
     socket pps stream 0660 system system
     disabled
-
-on property:sys.boot_completed=1
- # Uclamp tunings
-    write /proc/sys/kernel/sched_util_clamp_min_rt_default 96
-    write /proc/sys/kernel/sched_util_clamp_min 128
-
-    # top-app
-    write /dev/cpuset/top-app/uclamp.max max
-    write /dev/cpuset/top-app/uclamp.min 20
-    write /dev/cpuset/top-app/uclamp.boosted 1
-    write /dev/cpuset/top-app/uclamp.latency_sensitive 1
-
-    # foreground
-    write /dev/cpuset/foreground/uclamp.max 50
-    write /dev/cpuset/foreground/uclamp.min 20
-    write /dev/cpuset/foreground/uclamp.boosted 0
-    write /dev/cpuset/foreground/uclamp.latency_sensitive 0
-
-    # background
-    write /dev/cpuset/background/uclamp.max max
-    write /dev/cpuset/background/uclamp.min 20
-    write /dev/cpuset/background/uclamp.boosted 0
-    write /dev/cpuset/background/uclamp.latency_sensitive 0
-
-    # system-background
-    write /dev/cpuset/system-background/uclamp.max 50
-    write /dev/cpuset/system-background/uclamp.min 10
-    write /dev/cpuset/system-background/uclamp.boosted 0
-    write /dev/cpuset/system-background/uclamp.latency_sensitive 0

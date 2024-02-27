@@ -7,14 +7,52 @@ LOCAL_MODULE       := fstab.qcom
 LOCAL_MODULE_TAGS  := optional
 LOCAL_MODULE_CLASS := ETC
 ifeq ($(AB_OTA_UPDATER), true)
-LOCAL_SRC_FILES    := etc/fstab_AB.qcom
+    ifeq ($(TARGET_IS_LEGACY), true)
+        LOCAL_SRC_FILES    := etc/fstab_legacy_AB.qcom
+    else
+        LOCAL_SRC_FILES    := etc/fstab_AB.qcom
+    endif
+else ifeq ($(TARGET_IS_LEGACY), true)
+    LOCAL_SRC_FILES    := etc/fstab_legacy.qcom
 else
-LOCAL_SRC_FILES    := etc/fstab.qcom
+    LOCAL_SRC_FILES    := etc/fstab.qcom
 endif
+LOCAL_REQUIRED_MODULES := fstab.qcom_ramdisk
 LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)
 include $(BUILD_PREBUILT)
 
 ifeq ($(TARGET_KERNEL_VERSION),4.9)
+include $(CLEAR_VARS)
+LOCAL_MODULE       := fstab.qcom_ramdisk
+LOCAL_MODULE_STEM  := fstab.qcom
+LOCAL_MODULE_TAGS  := optional
+LOCAL_MODULE_CLASS := ETC
+ifeq ($(AB_OTA_UPDATER), true)
+    ifeq ($(TARGET_IS_LEGACY), true)
+        LOCAL_SRC_FILES    := etc/fstab_legacy_AB.qcom
+    else
+        LOCAL_SRC_FILES    := etc/fstab_AB.qcom
+    endif
+else ifeq ($(TARGET_IS_LEGACY), true)
+    LOCAL_SRC_FILES    := etc/fstab_legacy.qcom
+else
+    LOCAL_SRC_FILES    := etc/fstab.qcom
+endif
+ifeq ($(AB_OTA_UPDATER), true)
+LOCAL_MODULE_PATH  := $(TARGET_RECOVERY_ROOT_OUT)/first_stage_ramdisk
+else
+LOCAL_MODULE_PATH  := $(TARGET_RAMDISK_OUT)
+endif
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE       := fstab.zram
+LOCAL_MODULE_TAGS  := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES    := etc/fstab.zram
+LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)
+include $(BUILD_PREBUILT)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE	   := init.msm.usb.configfs.rc
 LOCAL_MODULE_TAGS  := optional
@@ -38,6 +76,22 @@ LOCAL_MODULE_TAGS  := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_SRC_FILES    := etc/init.qcom.usb.rc
 LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)/init/hw
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE       := init.parts.rc
+LOCAL_MODULE_TAGS  := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES    := etc/init.parts.rc
+LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)/init/hw
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE       := init.recovery.qcom.rc
+LOCAL_MODULE_TAGS  := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES    := etc/init.recovery.qcom.rc
+LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)

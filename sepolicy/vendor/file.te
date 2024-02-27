@@ -5,19 +5,9 @@ type proc_boot_reason, fs_type, proc_type;
 type camera_socket, file_type, data_file_type;
 
 # Fingerprint
-type fpc_data_file, file_type, core_data_file_type, data_file_type;
-type fpce_socket, file_type;
-type fpc_sysfs, fs_type, sysfs_type;
-type gx_fpd_data_file, file_type, core_data_file_type, data_file_type;
-
-# FPS Info
-type sysfs_fps, sysfs_type, fs_type;
-
-# Power
-type debugfs_sched_features, debugfs_type, fs_type;
-type proc_sysctl_autogroup, proc_type, fs_type;
-type proc_sysctl_schedboost, proc_type, fs_type;
-type sysfs_msm_subsys, sysfs_type, fs_type;
+type fingerprint_data_file, file_type, core_data_file_type, data_file_type;
+type fingerprint_socket, file_type;
+type fingerprint_sysfs, fs_type, sysfs_type;
 
 # Rild
 type rild_file, file_type, vendor_file_type;
@@ -28,7 +18,12 @@ type debugfs_rmt, debugfs_type, fs_type;
 # Touchscreen
 type proc_touchpanel, fs_type, sysfs_type, proc_type;
 
-# Battery Saver
-type sysfs_battery_saver, fs_type, sysfs_type;
+# FPS Info
+type sysfs_fps, sysfs_type, fs_type;
 
-type vendor_sysfs_kgsl, sysfs_type, fs_type;
+# XiaomiParts
+type sysfs_hgain, sysfs_type, fs_type;
+type sysfs_mgain, sysfs_type, fs_type;
+type sysfs_sgain, sysfs_type, fs_type;
+type sysfs_torch, sysfs_type, fs_type;
+type kcal_dev, sysfs_type, fs_type;

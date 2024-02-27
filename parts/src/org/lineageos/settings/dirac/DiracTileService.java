@@ -9,16 +9,20 @@ public class DiracTileService extends TileService {
 
     @Override
     public void onStartListening() {
-        mDiracUtils = DiracUtils.getInstance(getApplicationContext());
+
+        mDiracUtils = new DiracUtils(getApplicationContext());
+
+        boolean enhancerEnabled = mDiracUtils.isDiracEnabled();
 
         Tile tile = getQsTile();
-        if (mDiracUtils.isDiracEnabled()) {
+        if (enhancerEnabled) {
             tile.setState(Tile.STATE_ACTIVE);
         } else {
             tile.setState(Tile.STATE_INACTIVE);
         }
 
         tile.updateTile();
+
         super.onStartListening();
     }
 

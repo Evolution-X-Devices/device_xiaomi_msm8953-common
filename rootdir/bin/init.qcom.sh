@@ -195,25 +195,6 @@ case "$target" in
         else
              hw_platform=`cat /sys/devices/system/soc/soc0/hw_platform`
         fi
-
-        case "$soc_id" in
-             "317" | "324" | "325" | "326" | "318" | "327" | "385" )
-                  case "$hw_platform" in
-                       "Surf")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                       "MTP")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                       "RCM")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                       "QRD")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                  esac
-                  ;;
-       esac
         start_msm_irqbalance660
         ;;
     "apq8084")
@@ -246,26 +227,6 @@ case "$target" in
         if [ -f /sys/devices/soc0/hw_platform ]; then
              hw_platform=`cat /sys/devices/soc0/hw_platform`
         fi
-        case "$soc_id" in
-             "239")
-                  case "$hw_platform" in
-                       "Surf")
-                            case "$platform_subtype_id" in
-                                 "1")
-                                      setprop qemu.hw.mainkeys 0
-                                      ;;
-                            esac
-                            ;;
-                       "MTP")
-                          case "$platform_subtype_id" in
-                               "3")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                          esac
-                          ;;
-                  esac
-                  ;;
-        esac
         ;;
     "msm8994" | "msm8992" | "msm8998" | "apq8098_latv" | "sdm845" | "sdm710" | "qcs605" | "talos")
         start_msm_irqbalance
@@ -310,26 +271,6 @@ case "$target" in
         else
              hw_platform=`cat /sys/devices/system/soc/soc0/hw_platform`
         fi
-	if [ "$low_ram" != "true" ]; then
-             case "$soc_id" in
-                  "294" | "295" | "303" | "307" | "308" | "309" | "313" | "320" | "353" | "354" | "363" | "364")
-                       case "$hw_platform" in
-                            "Surf")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                            "MTP")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                            "RCM")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                            "QRD")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                       esac
-                       ;;
-             esac
-        fi
         ;;
     "msm8953")
 	start_msm_irqbalance_8939
@@ -346,32 +287,11 @@ case "$target" in
         else
              hw_platform=`cat /sys/devices/system/soc/soc0/hw_platform`
         fi
-        case "$soc_id" in
-             "336" | "337" | "347" | "360" | "393" )
-                  case "$hw_platform" in
-                       "Surf")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                       "MTP")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                       "RCM")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                       "QRD")
-                                    setprop qemu.hw.mainkeys 0
-                                    ;;
-                  esac
-                  ;;
-       esac
         ;;
 esac
 
 # Remove recovery cache from persist
 rm -rf /mnt/vendor/persist/cache/recovery
-
-# Remove settings cache, avoids derps after dirty flash
-rm -rf /data/system/package_cache
 
 #
 # Make modem config folder and copy firmware config to that folder for RIL
@@ -396,6 +316,9 @@ if [ ! -f /vendor/firmware_mnt/verinfo/ver_info.txt -o "$prev_version_info" != "
 fi
 chmod g-w /data/vendor/modem_config
 setprop ro.vendor.ril.mbn_copy_completed 1
+
+# Remove settings cache, avoids derps after dirty flash
+rm -rf /data/system/package_cache
 
 #check build variant for printk logging
 #current default minimum boot-time-default
