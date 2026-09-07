@@ -1,1 +1,1 @@
-allow location system_file:file r_file_perms;
+dontaudit location system_file:file { ioctl read getattr lock map open watch watch_reads };
