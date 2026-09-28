@@ -182,7 +182,7 @@ PRODUCT_PACKAGES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    android.hardware.light-service.lineage
+    android.hardware.lights-service.xiaomi_mititanium
 
 # Lineage Health
 PRODUCT_PACKAGES += \
