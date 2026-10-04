@@ -96,6 +96,10 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service
 
+# Device-specific Settings
+PRODUCT_PACKAGES += \
+    XiaomiParts
+
 # Display
 $(call soong_config_set_bool,libui,legacy_gralloc,true)
 $(call soong_config_set_bool,surfaceflinger,register_displayservice,true)
